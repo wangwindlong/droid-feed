@@ -93,6 +93,7 @@ class SourceRepo @Inject constructor(
                 true
             )
             .get()
+
             .addOnSuccessListener { result ->
                 val sources = result.documents.map { document ->
                     Source(
