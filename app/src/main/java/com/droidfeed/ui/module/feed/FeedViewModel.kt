@@ -12,6 +12,7 @@ import com.droidfeed.data.repo.SharedPrefsRepo
 import com.droidfeed.data.repo.SourceRepo
 import com.droidfeed.ui.adapter.UIModelType
 import com.droidfeed.ui.adapter.model.PostUIModel
+import com.droidfeed.ui.common.BaseViewModel
 import com.droidfeed.ui.module.feed.analytics.FeedScreenLogger
 import com.droidfeed.util.IntentProvider
 import com.droidfeed.util.event.Event
@@ -28,7 +29,7 @@ class FeedViewModel @Inject constructor(
     private val sharedPrefs: SharedPrefsRepo,
     private val logger: FeedScreenLogger,
     private val appRateInteractor: AppRateInteractor
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val feedType = MutableLiveData<FeedType>()
     private lateinit var refreshJob: Job

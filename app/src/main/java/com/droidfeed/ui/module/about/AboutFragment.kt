@@ -11,9 +11,11 @@ import androidx.lifecycle.lifecycleScope
 import com.airbnb.lottie.LottieAnimationView
 import com.droidfeed.BuildConfig
 import com.droidfeed.R
+import com.droidfeed.databinding.ActivityLicenceBinding
 import com.droidfeed.databinding.FragmentAboutBinding
 import com.droidfeed.ui.common.BaseFragment
 import com.droidfeed.ui.module.about.licence.LicencesActivity
+import com.droidfeed.ui.module.about.licence.LicencesViewModel
 import com.droidfeed.util.AnimUtils.Companion.MEDIUM_ANIM_DURATION
 import com.droidfeed.util.CustomTab
 import com.droidfeed.util.IntentProvider
@@ -24,42 +26,36 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @SuppressLint("ValidFragment")
-
-class AboutFragment : BaseFragment("about") {
+class AboutFragment : BaseFragment<AboutViewModel, FragmentAboutBinding>(AboutViewModel::class.java,"about") {
 
     @Inject lateinit var customTab: CustomTab
     @Inject lateinit var intentProvider: IntentProvider
 
-    private lateinit var binding: FragmentAboutBinding
-    private val aboutViewModel: AboutViewModel by viewModels { viewModelFactory }
+    override fun getLayoutRes(): Int {
+        return R.layout.fragment_about
+    }
 
+    override fun initViewModel(viewModel: AboutViewModel) {
+        mBinding.viewModel = viewModel
+        mBinding.appVersion = getString(R.string.app_version, BuildConfig.VERSION_NAME)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentAboutBinding.inflate(
-            inflater,
-            container,
-            false
-        ).apply {
-            viewModel = aboutViewModel
-            appVersion = getString(R.string.app_version, BuildConfig.VERSION_NAME)
-            lifecycleOwner = this@AboutFragment
-        }
-
+        val view = super.onCreateView(inflater, container, savedInstanceState)
         subscribeStartIntentEvent()
         subscribeOpenUrlEvent()
         subscribeOpenLicenceEvent()
 
         initAnimations()
-
-        return binding.root
+        return view
     }
 
     private fun subscribeOpenLicenceEvent() {
-        aboutViewModel.openLicences.observe(viewLifecycleOwner, EventObserver {
+        mViewModel.openLicences.observe(viewLifecycleOwner, EventObserver {
             Intent(context, LicencesActivity::class.java)
                 .also { intent ->
                     startActivity(intent)
@@ -68,19 +64,19 @@ class AboutFragment : BaseFragment("about") {
     }
 
     private fun subscribeOpenUrlEvent() {
-        aboutViewModel.openUrl.observe(viewLifecycleOwner, EventObserver { url ->
+        mViewModel.openUrl.observe(viewLifecycleOwner, EventObserver { url ->
             customTab.showTab(url)
         })
     }
 
     private fun subscribeStartIntentEvent() {
-        aboutViewModel.startIntent.observe(viewLifecycleOwner, EventObserver { intentType ->
+        mViewModel.startIntent.observe(viewLifecycleOwner, EventObserver { intentType ->
             startActivity(intentProvider.getIntent(intentType))
         })
     }
 
     private fun initAnimations() {
-        binding.animView.setOnClickListener { view ->
+        mBinding.animView.setOnClickListener { view ->
             if (!(view as LottieAnimationView).isAnimating) {
                 view.speed *= -1f
                 view.resumeAnimation()
@@ -88,9 +84,10 @@ class AboutFragment : BaseFragment("about") {
         }
 
         lifecycleScope.launch(Dispatchers.Main) {
-            binding.animView.frame = 0
+            mBinding.animView.frame = 0
             delay(MEDIUM_ANIM_DURATION)
-            binding.animView.resumeAnimation()
+            mBinding.animView.resumeAnimation()
         }
     }
+
 }

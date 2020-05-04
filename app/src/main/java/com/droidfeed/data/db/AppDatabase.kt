@@ -6,8 +6,7 @@ import com.droidfeed.data.model.Post
 import com.droidfeed.data.model.Source
 
 @Database(
-    entities = [(Source::class),
-        (Post::class)],
+    entities = [(Source::class), (Post::class)],
     version = 5
 )
 abstract class AppDatabase : RoomDatabase() {

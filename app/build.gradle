@@ -98,6 +98,12 @@ dependencies {
     implementation deps.androidx.lifecycle_ktx
     implementation deps.androidx.viewmodel_ktx
     kapt deps.androidx.lifecycle_compiler
+
+    //rx
+//    implementation deps.rxjava
+//    implementation deps.rxandroid
+//    implementation deps.rxkotlin
+
     implementation deps.androidx.paging
     implementation deps.androidx.constraint_layout
     implementation deps.room.runtime
@@ -120,6 +126,8 @@ dependencies {
     implementation deps.firebase.firestore
     implementation deps.jsoup
     implementation deps.gson // quick fix for version conflict between room and firestore
+    implementation deps.timber
+
     testImplementation deps.mockk
     testImplementation deps.junit
     testImplementation deps.kotlin.coroutines_test

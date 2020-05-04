@@ -3,6 +3,8 @@ package com.droidfeed.util.extension
 import android.content.Context
 import android.content.pm.PackageManager
 import android.net.ConnectivityManager
+import androidx.annotation.ColorRes
+import androidx.core.content.ContextCompat
 
 /**
  * Checks if the device has internet access.
@@ -30,3 +32,5 @@ fun Context.isPackageAvailable(targetPackage: String): Boolean {
         false
     }
 }
+
+fun Context.getColorCompat(@ColorRes resourceId: Int) = ContextCompat.getColor(this, resourceId)

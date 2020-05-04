@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.droidfeed.R
 import com.droidfeed.databinding.FragmentContributeBinding
 import com.droidfeed.ui.common.BaseFragment
 import com.droidfeed.util.AnimUtils.Companion.MEDIUM_ANIM_DURATION
@@ -16,53 +17,49 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ContributeFragment : BaseFragment("contribute") {
-
-    private lateinit var binding: FragmentContributeBinding
-    private val contributeViewModel: ContributeViewModel by viewModels { viewModelFactory }
+class ContributeFragment : BaseFragment<ContributeViewModel, FragmentContributeBinding>(ContributeViewModel::class.java,"contribute") {
 
     @Inject
     lateinit var customTab: CustomTab
+
+    override fun getLayoutRes(): Int {
+        return R.layout.fragment_contribute
+    }
+
+    override fun initViewModel(viewModel: ContributeViewModel) {
+        mBinding.viewModel = viewModel
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        super.onCreateView(inflater, container, savedInstanceState)
-        binding = FragmentContributeBinding.inflate(
-            inflater,
-            container,
-            false
-        ).apply {
-            viewModel = contributeViewModel
-            lifecycleOwner = this@ContributeFragment
-        }
-
+        val view = super.onCreateView(inflater, container, savedInstanceState)
         subscribeOpenRepositoryEvent()
         initAnimations()
-
-        return binding.root
+        return view
     }
 
     private fun subscribeOpenRepositoryEvent() {
-        contributeViewModel.openRepositoryEvent.observe(viewLifecycleOwner, EventObserver { url ->
+        mViewModel.openRepositoryEvent.observe(viewLifecycleOwner, EventObserver { url ->
             customTab.showTab(url)
         })
     }
 
     private fun initAnimations() {
-        binding.animView.setOnClickListener {
-            if (!binding.animView.isAnimating) {
-                binding.animView.speed *= -1f
-                binding.animView.resumeAnimation()
+        mBinding.animView.setOnClickListener {
+            if (!mBinding.animView.isAnimating) {
+                mBinding.animView.speed *= -1f
+                mBinding.animView.resumeAnimation()
             }
         }
 
         lifecycleScope.launch(Dispatchers.Main) {
-            binding.animView.frame = 0
+            mBinding.animView.frame = 0
             delay(MEDIUM_ANIM_DURATION)
-            binding.animView.resumeAnimation()
+            mBinding.animView.resumeAnimation()
         }
     }
+
 }

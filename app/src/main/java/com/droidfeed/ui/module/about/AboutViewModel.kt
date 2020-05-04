@@ -3,12 +3,13 @@ package com.droidfeed.ui.module.about
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.droidfeed.BuildConfig
+import com.droidfeed.ui.common.BaseViewModel
 import com.droidfeed.ui.module.about.analytics.AboutScreenLogger
 import com.droidfeed.util.IntentProvider
 import com.droidfeed.util.event.Event
 import javax.inject.Inject
 
-class AboutViewModel @Inject constructor(private val logger: AboutScreenLogger) : ViewModel() {
+class AboutViewModel @Inject constructor(private val logger: AboutScreenLogger) : BaseViewModel() {
 
     val startIntent = MutableLiveData<Event<IntentProvider.TYPE>>()
     val openUrl = MutableLiveData<Event<String>>()

@@ -36,7 +36,10 @@ ext.versions = [
         androidx_espresso_core: '3.1.0',
         androidx_test_rules   : '1.2.0',
         androidx_test_ext     : '1.0.0',
-        androidx_test_monitor : '1.2.0'
+        androidx_test_monitor : '1.2.0',
+        timber                : '4.7.0',
+        rx_java               : '2.1.14',
+        rx_kotlin             : '2.2.0'
 ]
 
 ext.deps = [:]
@@ -121,4 +124,8 @@ deps.arch_testing = "android.arch.core:core-testing:$versions.android_core_testi
 deps.lottie = "com.airbnb.android:lottie:$versions.lottie"
 deps.jsoup = "org.jsoup:jsoup:$versions.jSoup"
 deps.gson = "com.google.code.gson:gson:$versions.gson"
+deps.timber = "com.jakewharton.timber:timber:$versions.timber"
 deps.detekt_formatting = "io.gitlab.arturbosch.detekt:detekt-formatting:${versions.detekt}"
+deps.rxjava = "io.reactivex.rxjava2:rxjava:${versions.rx_java}"
+deps.rxandroid = "io.reactivex.rxjava2:rxandroid:2.0.1"
+deps.rxkotlin = "io.reactivex.rxjava2:rxkotlin:${versions.rx_kotlin}"

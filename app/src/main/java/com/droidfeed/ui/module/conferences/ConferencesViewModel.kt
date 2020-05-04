@@ -7,6 +7,7 @@ import com.droidfeed.data.DataStatus
 import com.droidfeed.data.model.Conference
 import com.droidfeed.data.repo.ConferenceRepo
 import com.droidfeed.ui.adapter.model.ConferenceUIModel
+import com.droidfeed.ui.common.BaseViewModel
 import com.droidfeed.ui.module.conferences.analytics.ConferencesScreenLogger
 import com.droidfeed.util.event.Event
 import kotlinx.coroutines.Dispatchers
@@ -16,7 +17,7 @@ import javax.inject.Inject
 class ConferencesViewModel @Inject constructor(
     private val conferenceRepo: ConferenceRepo,
     private val logger: ConferencesScreenLogger
-) : ViewModel() {
+) : BaseViewModel() {
 
     val conferences = MutableLiveData<List<ConferenceUIModel>>()
     val isProgressVisible = MutableLiveData<Boolean>().apply { value = true }
