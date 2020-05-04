@@ -1,10 +1,12 @@
 package com.droidfeed.data.repo
 
+import android.util.Log
 import com.droidfeed.data.DataStatus
 import com.droidfeed.data.db.SourceDao
 import com.droidfeed.data.model.Source
 import com.droidfeed.data.parser.NewsXmlParser
 import com.droidfeed.util.extension.isOnline
+import com.droidfeed.util.logConsole
 import com.droidfeed.util.logThrowable
 import com.google.firebase.firestore.FirebaseFirestore
 import okhttp3.OkHttpClient
@@ -107,8 +109,12 @@ class SourceRepo @Inject constructor(
                 if (sources.isEmpty() &&
                     !FirebaseFirestore.getInstance().app.applicationContext.isOnline()
                 ) {
+                    logConsole("Failed")
+                    Log.d("SourceRepo", "Failed")
                     continuation.resume(DataStatus.Failed(UnknownHostException()))
                 } else {
+                    logConsole("Successful")
+                    Log.d("SourceRepo", "Successful")
                     continuation.resume(DataStatus.Successful(sources))
                 }
             }.addOnFailureListener { exception ->

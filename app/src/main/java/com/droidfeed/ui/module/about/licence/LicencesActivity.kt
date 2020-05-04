@@ -16,7 +16,24 @@ import com.droidfeed.ui.common.BaseActivity
 import com.droidfeed.util.CustomTab
 import com.droidfeed.util.event.EventObserver
 
-class LicencesActivity : BaseActivity() {
+class LicencesActivity : BaseActivity<LicencesViewModel, ActivityLicenceBinding>(LicencesViewModel::class.java) {
+
+    override fun getLayoutRes(): Int {
+        return R.layout.activity_licence
+    }
+
+    override fun initViewModel(viewModel: LicencesViewModel) {
+        mBinding.toolbarTitle = getString(R.string.licences)
+        mBinding.toolbarHomeNavClickListener = View.OnClickListener {
+            licencesViewModel.onBackNavigation()
+        }
+
+        mBinding.recyclerView.apply {
+            layoutManager = linearLayoutManager
+            overScrollMode = View.OVER_SCROLL_NEVER
+            adapter = licenceAdapter
+        }
+    }
 
     private val linearLayoutManager = LinearLayoutManager(this)
     private val licenceAdapter: UIModelAdapter by lazy {
@@ -41,22 +58,6 @@ class LicencesActivity : BaseActivity() {
         }
 
         super.onCreate(savedInstanceState)
-
-        DataBindingUtil.setContentView<ActivityLicenceBinding>(
-            this,
-            R.layout.activity_licence
-        ).apply {
-            toolbarTitle = getString(R.string.licences)
-            toolbarHomeNavClickListener = View.OnClickListener {
-                licencesViewModel.onBackNavigation()
-            }
-
-            recyclerView.apply {
-                layoutManager = linearLayoutManager
-                overScrollMode = View.OVER_SCROLL_NEVER
-                adapter = licenceAdapter
-            }
-        }
 
         subscribeOpenUrl()
         subscribeLicenceUIModels()

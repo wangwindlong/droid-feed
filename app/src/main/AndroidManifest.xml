@@ -14,7 +14,7 @@
         android:usesCleartextTraffic="true">
 
         <activity
-            android:name=".ui.module.main.MainActivity"
+            android:name=".ui.module.launch.LauncherActivity"
             android:configChanges="orientation"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.Splash"
@@ -39,6 +39,10 @@
 
         <activity
             android:name=".ui.module.onboard.OnBoardActivity"
+            android:theme="@style/AppTheme.DarkWindowBackground" />
+
+        <activity
+            android:name=".ui.module.main.MainActivity"
             android:theme="@style/AppTheme.DarkWindowBackground" />
 
         <activity android:name=".ui.module.about.licence.LicencesActivity" />

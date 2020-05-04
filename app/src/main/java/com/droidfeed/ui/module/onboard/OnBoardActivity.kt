@@ -3,8 +3,6 @@ package com.droidfeed.ui.module.onboard
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
-import androidx.activity.viewModels
-import androidx.databinding.DataBindingUtil
 import com.droidfeed.R
 import com.droidfeed.data.repo.SharedPrefsRepo
 import com.droidfeed.databinding.ActivityOnboardBinding
@@ -13,49 +11,54 @@ import com.droidfeed.ui.module.main.MainActivity
 import com.droidfeed.util.CustomTab
 import com.droidfeed.util.event.EventObserver
 import com.droidfeed.util.extension.getClickableSpan
+import com.droidfeed.util.logd
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
-class OnBoardActivity : BaseActivity() {
+class OnBoardActivity : BaseActivity<OnBoardViewModel, ActivityOnboardBinding>(OnBoardViewModel::class.java) {
+    val TAG = OnBoardActivity::class.java.simpleName
 
     @Inject lateinit var sharedPrefs: SharedPrefsRepo
 
     private val customTab = CustomTab(this)
-    private val viewModel: OnBoardViewModel by viewModels { viewModelFactory }
-    private lateinit var binding: ActivityOnboardBinding
+
+
+    override fun getLayoutRes(): Int {
+        return R.layout.activity_onboard
+    }
+
+    override fun initViewModel(viewModel: OnBoardViewModel) {
+        mBinding.cbAgreement.movementMethod = LinkMovementMethod.getInstance()
+
+        mBinding.onBoardViewModel = viewModel
+        mBinding.termsOfServiceSpan = getTermsOfUseSpan()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setupFullScreenWindow()
         super.onCreate(savedInstanceState)
 
-        binding = DataBindingUtil.setContentView<ActivityOnboardBinding>(
-            this,
-            R.layout.activity_onboard
-        ).apply {
-            lifecycleOwner = this@OnBoardActivity
-            cbAgreement.movementMethod = LinkMovementMethod.getInstance()
-
-            onBoardViewModel = viewModel
-            termsOfServiceSpan = getTermsOfUseSpan()
-        }
-
+        logd(TAG, "onCreate sharedPrefs:${sharedPrefs},hasAcceptedTerms ${sharedPrefs.hasAcceptedTerms()}")
         subscribeNavigationEvents()
     }
 
     private fun subscribeNavigationEvents() {
-        viewModel.openUrl.observe(this, EventObserver { url ->
+        mViewModel.openUrl.observe(this, EventObserver { url ->
             customTab.showTab(url)
         })
 
-        viewModel.showSnackBar.observe(this, EventObserver { stringId ->
+        mViewModel.showSnackBar.observe(this, EventObserver { stringId ->
             Snackbar.make(
-                binding.root,
+                mBinding.root,
                 stringId,
                 Snackbar.LENGTH_LONG
-            ).setAnchorView(binding.cbAgreement).show()
+            ).setAnchorView(mBinding.cbAgreement).show()
         })
 
-        viewModel.openMainActivity.observe(this, EventObserver { continueToMainActivity() })
+        mViewModel.openMainActivity.observe(this, EventObserver {
+            continueToMainActivity()
+            finish()
+        })
     }
 
     private fun getTermsOfUseSpan() = getString(
@@ -64,12 +67,12 @@ class OnBoardActivity : BaseActivity() {
     ).getClickableSpan(
         getString(R.string.terms_of_service)
     ) {
-        viewModel.onTermsOfUseClicked()
+        mViewModel.onTermsOfUseClicked()
     }
 
     private fun continueToMainActivity() {
         sharedPrefs.setHasAcceptedTerms(true)
-
+        logd(TAG, "continueToMainActivity sharedPrefs:${sharedPrefs},hasAcceptedTerms ${sharedPrefs.hasAcceptedTerms()}")
         Intent(
             this,
             MainActivity::class.java
@@ -80,4 +83,6 @@ class OnBoardActivity : BaseActivity() {
             startActivity(this)
         }
     }
+
+
 }

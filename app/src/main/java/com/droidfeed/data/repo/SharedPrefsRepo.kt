@@ -23,6 +23,10 @@ class SharedPrefsRepo @Inject constructor(private val sharedPrefs: SharedPrefere
         sharedPrefs.hasAcceptedTerms = hasAccepted
     }
 
+    fun hasAcceptedTerms():Boolean {
+        return sharedPrefs.hasAcceptedTerms
+    }
+
     fun incrementItemShareCount() {
         sharedPrefs.shareCount += 1
     }
@@ -36,7 +40,6 @@ class SharedPrefsRepo @Inject constructor(private val sharedPrefs: SharedPrefere
     val appOpenCount = sharedPrefs.appOpenCount
     val shareCount = sharedPrefs.shareCount
     val appRatePromptIndex = sharedPrefs.appRatePromptIndex
-    val hasAcceptedTerms = sharedPrefs.hasAcceptedTerms
 
 
 }

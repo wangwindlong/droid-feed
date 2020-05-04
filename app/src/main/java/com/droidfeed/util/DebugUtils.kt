@@ -29,3 +29,15 @@ fun logConsole(message: String) {
         Log.e(TAG, message)
     }
 }
+
+fun logger(message: String) {
+    if (BuildConfig.DEBUG) {
+        Log.d(TAG, message)
+    }
+}
+
+fun logd(tag: String, message: String) {
+    if (BuildConfig.DEBUG) {
+        Log.d(tag, message)
+    }
+}

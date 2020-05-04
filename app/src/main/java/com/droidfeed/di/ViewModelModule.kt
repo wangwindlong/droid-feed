@@ -10,6 +10,7 @@ import com.droidfeed.ui.module.about.licence.LicencesViewModel
 import com.droidfeed.ui.module.conferences.ConferencesViewModel
 import com.droidfeed.ui.module.contribute.ContributeViewModel
 import com.droidfeed.ui.module.feed.FeedViewModel
+import com.droidfeed.ui.module.launch.LaunchViewModel
 import com.droidfeed.ui.module.main.MainViewModel
 import com.droidfeed.ui.module.onboard.OnBoardViewModel
 import dagger.Binds
@@ -18,6 +19,11 @@ import dagger.multibindings.IntoMap
 
 @Module
 abstract class ViewModelModule {
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LaunchViewModel::class)
+    abstract fun bindLauncherViewModel(viewModel: LaunchViewModel): ViewModel
 
     @Binds
     @IntoMap

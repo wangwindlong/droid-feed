@@ -24,16 +24,14 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     private val sourceRepo: SourceRepo,
     private val postRepo: PostRepo,
-    sharedPrefs: SharedPrefsRepo
+    var sharedPrefs: SharedPrefsRepo
 ) : BaseViewModel() {
 
     val toolbarTitle = MutableLiveData<@StringRes Int>().apply { value = R.string.app_name }
     val onNavigation = MutableLiveData<Destination>().apply { value = Destination.FEED }
     val scrollTop = MutableLiveData<Event<Unit>>()
 
-    val isUserTermsAccepted = MutableLiveData<Boolean>().apply {
-        value = sharedPrefs.hasAcceptedTerms
-    }
+    val isUserTermsAccepted = MutableLiveData<Boolean>()
     val sourceAddIcon = MutableLiveData<@DrawableRes Int>().apply {
         value = R.drawable.avd_close_to_add
     }
@@ -75,6 +73,7 @@ class MainViewModel @Inject constructor(
 
     init {
         updateSources(sourceRepo)
+        isUserTermsAccepted.postValue(sharedPrefs.hasAcceptedTerms())
     }
 
     private fun updateSources(sourceRepo: SourceRepo) {

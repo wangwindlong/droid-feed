@@ -6,25 +6,22 @@ import androidx.databinding.DataBindingUtil
 import com.droidfeed.R
 import com.droidfeed.databinding.ActivityWebviewBinding
 import com.droidfeed.ui.common.BaseActivity
+import com.droidfeed.ui.common.BaseViewModel
 
-class WebViewActivity : BaseActivity() {
+class WebViewActivity : BaseActivity<BaseViewModel, ActivityWebviewBinding>(BaseViewModel::class.java) {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val binding = DataBindingUtil.setContentView<ActivityWebviewBinding>(
-            this,
-            R.layout.activity_webview
-        )
-
-        init(binding)
+    companion object {
+        const val EXTRA_URL = "url"
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
-    private fun init(binding: ActivityWebviewBinding) {
+    override fun getLayoutRes(): Int {
+        return R.layout.activity_webview
+    }
+
+    override fun initViewModel(viewModel: BaseViewModel) {
         val webSiteUrl = intent.getStringExtra(EXTRA_URL)
 
-        binding.apply {
+        mBinding.apply {
             webView.settings.javaScriptEnabled = true
 
             url = webSiteUrl
@@ -33,9 +30,5 @@ class WebViewActivity : BaseActivity() {
                 onBackPressed()
             }
         }
-    }
-
-    companion object {
-        const val EXTRA_URL = "url"
     }
 }

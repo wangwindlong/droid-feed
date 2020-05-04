@@ -5,7 +5,11 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import androidx.activity.viewModels
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelProvider
 import com.droidfeed.util.isMarshmallow
 import dagger.android.AndroidInjection
@@ -16,13 +20,29 @@ import javax.inject.Inject
 
 
 @SuppressLint("Registered")
-abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
+abstract class BaseActivity<VM : BaseViewModel, DB : ViewDataBinding>(private val mViewModelClass: Class<VM>) : AppCompatActivity(), HasAndroidInjector {
 
-    @Inject lateinit var viewModelFactory: ViewModelProvider.Factory
-    @Inject lateinit var androidInjector: DispatchingAndroidInjector<Any>
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+    @Inject
+    lateinit var androidInjector: DispatchingAndroidInjector<Any>
+
+    @LayoutRes
+    abstract fun getLayoutRes(): Int
+
+    abstract fun initViewModel(viewModel: VM)
+
+    val mBinding by lazy {
+        DataBindingUtil.setContentView(this, getLayoutRes()) as DB
+    }
+    val mViewModel by lazy {
+        ViewModelProvider(viewModelStore, viewModelFactory).get(mViewModelClass)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
+        mBinding.lifecycleOwner = this@BaseActivity
+        initViewModel(mViewModel)
         super.onCreate(savedInstanceState)
     }
 
@@ -43,8 +63,8 @@ abstract class BaseActivity : AppCompatActivity(), HasAndroidInjector {
     protected fun setupFullScreenWindow() {
         if (isMarshmallow()) {
             window.setFlags(
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS,
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS
             )
         }
     }
