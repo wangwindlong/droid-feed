@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +12,7 @@ import com.droidfeed.R
 import com.droidfeed.databinding.FragmentConferencesBinding
 import com.droidfeed.ui.adapter.BaseUIModelAlias
 import com.droidfeed.ui.adapter.UIModelAdapter
-import com.droidfeed.ui.common.BaseFragment
+import com.droidfeed.ui.common.BaseInjectFragment
 import com.droidfeed.ui.common.CollapseScrollListener
 import com.droidfeed.ui.common.WrapContentLinearLayoutManager
 import com.droidfeed.ui.module.main.MainViewModel
@@ -21,7 +20,7 @@ import com.droidfeed.util.CustomTab
 import com.droidfeed.util.event.EventObserver
 import javax.inject.Inject
 
-class ConferencesFragment : BaseFragment<ConferencesViewModel, FragmentConferencesBinding>(ConferencesViewModel::class.java,"conferences") {
+class ConferencesFragment : BaseInjectFragment<ConferencesViewModel, FragmentConferencesBinding>(ConferencesViewModel::class.java,"conferences") {
 
     @Inject lateinit var customTab: CustomTab
 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:drawable="@drawable/animated_train_bird">
+    <target android:name="bird">
+        <aapt:attr name="android:animation">
+                <objectAnimator
+                    android:duration="600"
+                    android:interpolator="@android:anim/accelerate_interpolator"
+                    android:propertyName="pathData"
+                    android:repeatCount="infinite"
+                    android:repeatMode="reverse"
+                    android:valueFrom="M2,4c3,-1 6,-1.5 7,2c1,-3.5 4,-3 7,-2"
+                    android:valueTo="M4,7c3,-1 4,-4.5 5,-1c1,-3.5 2,0 5,1"
+                    android:valueType="pathType" />
+        </aapt:attr>
+    </target>
+
+    <!--<target android:name="bird_0">-->
+        <!--<aapt:attr name="android:animation">-->
+            <!--<set>-->
+                <!--<objectAnimator-->
+                    <!--android:duration="1200"-->
+                    <!--android:interpolator="@android:anim/overshoot_interpolator"-->
+                    <!--android:propertyName="translateX"-->
+                    <!--android:valueFrom="5"-->
+                    <!--android:valueTo="1"-->
+                    <!--android:valueType="floatType" />-->
+                <!--<objectAnimator-->
+                    <!--android:duration="1200"-->
+                    <!--android:interpolator="@android:anim/overshoot_interpolator"-->
+                    <!--android:propertyName="translateY"-->
+                    <!--android:valueFrom="0"-->
+                    <!--android:valueTo="120"-->
+                    <!--android:valueType="floatType" />-->
+            <!--</set>-->
+        <!--</aapt:attr>-->
+    <!--</target>-->
+
+</animated-vector>

@@ -4,6 +4,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlActivated">?colorPrimary</item>
 
         <item name="android:statusBarColor">@android:color/transparent</item>
 
@@ -15,6 +16,19 @@
         <item name="windowNoTitle">true</item>
 
         <item name="android:windowAnimationStyle">@style/ActivityAnimations</item>
+    </style>
+
+    <style name="TextAppearance.BottomNavigationView" parent="@style/TextAppearance.MaterialComponents.Caption">
+        <!--<item name="android:fontFamily">@font/google_sans</item>-->
+        <item name="android:textColor">@color/bottom_nav_item</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+    <style name="Widget.BottomNav" parent="@style/Widget.MaterialComponents.BottomNavigationView.Colored">
+        <item name="itemIconTint">@color/bottom_nav_item</item>
+        <item name="itemTextAppearanceActive">@style/TextAppearance.BottomNavigationView</item>
+        <item name="itemTextAppearanceInactive">@style/TextAppearance.BottomNavigationView</item>
+        <item name="labelVisibilityMode">labeled</item>
+        <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Dark</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.MaterialComponents.ActionBar" />

@@ -2,16 +2,15 @@ package com.droidfeed.ui.module.launch
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.activity.viewModels
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.droidfeed.R
 import com.droidfeed.data.repo.SharedPrefsRepo
 import com.droidfeed.databinding.ActivityLauncherBinding
 import com.droidfeed.ui.common.BaseActivity
 import com.droidfeed.ui.module.main.MainActivity
+import com.droidfeed.ui.module.navigate.NavigateActivity
 import com.droidfeed.ui.module.onboard.OnBoardActivity
-import com.droidfeed.util.logd
+import timber.log.Timber
 import javax.inject.Inject
 
 class LauncherActivity : BaseActivity<LaunchViewModel, ActivityLauncherBinding>(LaunchViewModel::class.java) {
@@ -29,7 +28,7 @@ class LauncherActivity : BaseActivity<LaunchViewModel, ActivityLauncherBinding>(
         mBinding.viewModel = viewModel
 
         mViewModel.isUserTermsAccepted.observe(this, Observer { isUserTermsAccepted ->
-            logd(TAG, "subscribeUserTerms Observer isUserTermsAccepted:${isUserTermsAccepted},isUserTermsAccepted ${mViewModel.isUserTermsAccepted.value}")
+            Timber.d("subscribeUserTerms Observer isUserTermsAccepted:${isUserTermsAccepted},isUserTermsAccepted ${mViewModel.isUserTermsAccepted.value}")
             if (!isUserTermsAccepted) {
                 startOnBoardActivity()
             } else {
@@ -37,7 +36,7 @@ class LauncherActivity : BaseActivity<LaunchViewModel, ActivityLauncherBinding>(
             }
             finish()
         })
-        logd(TAG, "onCreate sharedPrefs:${sharedPrefs},hasAcceptedTerms ${mViewModel.isUserTermsAccepted.value}")
+        Timber.d("onCreate sharedPrefs:${sharedPrefs},hasAcceptedTerms ${mViewModel.isUserTermsAccepted.value}")
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -63,7 +62,7 @@ class LauncherActivity : BaseActivity<LaunchViewModel, ActivityLauncherBinding>(
         sharedPrefs.setHasAcceptedTerms(true)
         Intent(
                 this,
-                MainActivity::class.java
+                NavigateActivity::class.java
         ).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -71,8 +70,6 @@ class LauncherActivity : BaseActivity<LaunchViewModel, ActivityLauncherBinding>(
             startActivity(this)
         }
     }
-
-
 
 
 }

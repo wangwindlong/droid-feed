@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.PagedList
@@ -16,7 +15,7 @@ import com.droidfeed.R
 import com.droidfeed.databinding.FragmentFeedBinding
 import com.droidfeed.ui.adapter.BaseUIModelAlias
 import com.droidfeed.ui.adapter.UIModelPaginatedAdapter
-import com.droidfeed.ui.common.BaseFragment
+import com.droidfeed.ui.common.BaseInjectFragment
 import com.droidfeed.ui.common.CollapseScrollListener
 import com.droidfeed.ui.common.Scrollable
 import com.droidfeed.ui.common.WrapContentLinearLayoutManager
@@ -31,7 +30,7 @@ import kotlinx.android.synthetic.main.fragment_feed.*
 import javax.inject.Inject
 
 
-class FeedFragment : BaseFragment<FeedViewModel, FragmentFeedBinding>(FeedViewModel::class.java, "feed"), Scrollable {
+class FeedFragment : BaseInjectFragment<FeedViewModel, FragmentFeedBinding>(FeedViewModel::class.java, "feed"), Scrollable {
 
     @Inject
     lateinit var customTab: CustomTab

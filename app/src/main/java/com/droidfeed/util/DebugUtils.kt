@@ -1,8 +1,8 @@
 package com.droidfeed.util
 
-import android.util.Log
 import com.crashlytics.android.Crashlytics
 import com.droidfeed.BuildConfig
+import timber.log.Timber
 
 private const val TAG = "DroidFeed"
 
@@ -25,19 +25,9 @@ fun logThrowable(throwable: Throwable?) {
  * @param message
  */
 fun logConsole(message: String) {
-    if (BuildConfig.DEBUG) {
-        Log.e(TAG, message)
-    }
-}
-
-fun logger(message: String) {
-    if (BuildConfig.DEBUG) {
-        Log.d(TAG, message)
-    }
+    Timber.d(message)
 }
 
 fun logd(tag: String, message: String) {
-    if (BuildConfig.DEBUG) {
-        Log.d(tag, message)
-    }
+    Timber.d(message)
 }

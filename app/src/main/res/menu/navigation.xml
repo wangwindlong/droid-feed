@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 Google LLC
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+            android:id="@+id/navigation_find"
+            android:title="@string/title_find"
+            app:contentDescription="@string/title_find"
+            android:icon="@drawable/ic_find_selector"
+    />
+
+    <item
+            android:id="@+id/navigation_shelf"
+            android:title="@string/title_shelf"
+            app:contentDescription="@string/title_shelf"
+            android:icon="@drawable/asld_nav_agenda"
+    />
+
+    <item
+            android:id="@+id/navigation_mind"
+            android:title="@string/title_mind"
+            app:contentDescription="@string/title_mind"
+            android:icon="@drawable/asld_nav_schedule"
+    />
+
+    <item
+            android:id="@+id/navigation_info"
+            android:title="@string/title_mine"
+            app:contentDescription="@string/title_mine"
+            android:icon="@drawable/asld_nav_info"
+    />
+</menu>

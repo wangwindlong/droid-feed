@@ -28,7 +28,7 @@ import com.droidfeed.util.AnimUtils
 import com.droidfeed.util.ColorPalette
 import com.droidfeed.util.event.EventObserver
 import com.droidfeed.util.extension.hideKeyboard
-import com.droidfeed.util.logd
+import timber.log.Timber
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.activity_main.*
 import javax.inject.Inject
@@ -60,7 +60,7 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(MainViewMo
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
-        logd(TAG, "onCreate mainViewModel:${mViewModel},isUserTermsAccepted ${mViewModel.isUserTermsAccepted.value}")
+        Timber.d("onCreate mainViewModel:${mViewModel},isUserTermsAccepted ${mViewModel.isUserTermsAccepted.value}")
         subscribeUserTerms()
         subscribeNavigation()
         subscribeScrollTopEvent()
@@ -156,9 +156,9 @@ class MainActivity : BaseActivity<MainViewModel, ActivityMainBinding>(MainViewMo
     }
 
     private fun subscribeUserTerms() {
-        logd(TAG, "subscribeUserTerms mViewModel:${mViewModel},sharedPrefs.isUserTermsAccepted ${mViewModel.sharedPrefs.hasAcceptedTerms()}")
+        Timber.d("subscribeUserTerms mViewModel:${mViewModel},sharedPrefs.isUserTermsAccepted ${mViewModel.sharedPrefs.hasAcceptedTerms()}")
         mViewModel.isUserTermsAccepted.observe(this, Observer { isUserTermsAccepted ->
-            logd(TAG, "subscribeUserTerms Observer isUserTermsAccepted:${isUserTermsAccepted},isUserTermsAccepted ${mViewModel.isUserTermsAccepted.value}")
+            Timber.d("subscribeUserTerms Observer isUserTermsAccepted:${isUserTermsAccepted},isUserTermsAccepted ${mViewModel.isUserTermsAccepted.value}")
             if (!isUserTermsAccepted) {
                 startOnBoardActivity()
             }

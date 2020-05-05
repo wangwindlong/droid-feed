@@ -6,10 +6,10 @@ import com.droidfeed.data.model.Post
 import com.droidfeed.data.model.Source
 import com.droidfeed.data.parser.NewsXmlParser
 import com.droidfeed.util.logThrowable
-import com.droidfeed.util.logd
 import kotlinx.coroutines.*
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -64,7 +64,7 @@ class PostRepo @Inject constructor(
     }
 
     private fun fetchAndParsePosts(source: Source): DataStatus<List<Post>> {
-        logd("PostRepo", "fetchAndParsePosts source.url=${source.url}")
+        Timber.d("fetchAndParsePosts source.url=${source.url}")
         if (!source.url.contains("http")) {
             return DataStatus.Failed(IllegalArgumentException(source.url+": Expected URL scheme 'http' or 'https' but no colon was found"))
         }

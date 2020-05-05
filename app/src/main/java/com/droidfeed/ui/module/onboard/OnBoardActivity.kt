@@ -8,17 +8,19 @@ import com.droidfeed.data.repo.SharedPrefsRepo
 import com.droidfeed.databinding.ActivityOnboardBinding
 import com.droidfeed.ui.common.BaseActivity
 import com.droidfeed.ui.module.main.MainActivity
+import com.droidfeed.ui.module.navigate.NavigateActivity
 import com.droidfeed.util.CustomTab
 import com.droidfeed.util.event.EventObserver
 import com.droidfeed.util.extension.getClickableSpan
-import com.droidfeed.util.logd
+import timber.log.Timber
 import com.google.android.material.snackbar.Snackbar
 import javax.inject.Inject
 
 class OnBoardActivity : BaseActivity<OnBoardViewModel, ActivityOnboardBinding>(OnBoardViewModel::class.java) {
     val TAG = OnBoardActivity::class.java.simpleName
 
-    @Inject lateinit var sharedPrefs: SharedPrefsRepo
+    @Inject
+    lateinit var sharedPrefs: SharedPrefsRepo
 
     private val customTab = CustomTab(this)
 
@@ -38,7 +40,7 @@ class OnBoardActivity : BaseActivity<OnBoardViewModel, ActivityOnboardBinding>(O
         setupFullScreenWindow()
         super.onCreate(savedInstanceState)
 
-        logd(TAG, "onCreate sharedPrefs:${sharedPrefs},hasAcceptedTerms ${sharedPrefs.hasAcceptedTerms()}")
+        Timber.d("onCreate sharedPrefs:${sharedPrefs},hasAcceptedTerms ${sharedPrefs.hasAcceptedTerms()}")
         subscribeNavigationEvents()
     }
 
@@ -49,9 +51,9 @@ class OnBoardActivity : BaseActivity<OnBoardViewModel, ActivityOnboardBinding>(O
 
         mViewModel.showSnackBar.observe(this, EventObserver { stringId ->
             Snackbar.make(
-                mBinding.root,
-                stringId,
-                Snackbar.LENGTH_LONG
+                    mBinding.root,
+                    stringId,
+                    Snackbar.LENGTH_LONG
             ).setAnchorView(mBinding.cbAgreement).show()
         })
 
@@ -62,20 +64,20 @@ class OnBoardActivity : BaseActivity<OnBoardViewModel, ActivityOnboardBinding>(O
     }
 
     private fun getTermsOfUseSpan() = getString(
-        R.string.i_agree_to,
-        getString(R.string.terms_of_service)
+            R.string.i_agree_to,
+            getString(R.string.terms_of_service)
     ).getClickableSpan(
-        getString(R.string.terms_of_service)
+            getString(R.string.terms_of_service)
     ) {
         mViewModel.onTermsOfUseClicked()
     }
 
     private fun continueToMainActivity() {
         sharedPrefs.setHasAcceptedTerms(true)
-        logd(TAG, "continueToMainActivity sharedPrefs:${sharedPrefs},hasAcceptedTerms ${sharedPrefs.hasAcceptedTerms()}")
+        Timber.d("continueToMainActivity sharedPrefs:${sharedPrefs},hasAcceptedTerms ${sharedPrefs.hasAcceptedTerms()}")
         Intent(
-            this,
-            MainActivity::class.java
+                this,
+                NavigateActivity::class.java
         ).apply {
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)

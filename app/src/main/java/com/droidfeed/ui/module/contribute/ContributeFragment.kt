@@ -4,11 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.droidfeed.R
 import com.droidfeed.databinding.FragmentContributeBinding
-import com.droidfeed.ui.common.BaseFragment
+import com.droidfeed.ui.common.BaseInjectFragment
 import com.droidfeed.util.AnimUtils.Companion.MEDIUM_ANIM_DURATION
 import com.droidfeed.util.CustomTab
 import com.droidfeed.util.event.EventObserver
@@ -17,7 +16,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ContributeFragment : BaseFragment<ContributeViewModel, FragmentContributeBinding>(ContributeViewModel::class.java,"contribute") {
+class ContributeFragment : BaseInjectFragment<ContributeViewModel, FragmentContributeBinding>(ContributeViewModel::class.java,"contribute") {
 
     @Inject
     lateinit var customTab: CustomTab

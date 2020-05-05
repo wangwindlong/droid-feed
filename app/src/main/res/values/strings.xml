@@ -95,4 +95,11 @@
     <string name="error_source_exists">This feed already exists.</string>
     <string name="error_empty_source_url">Please enter a feed url</string>
     <string name="remove">Remove</string>
+
+
+    <string name="title_mind" translation_description="The title for the schedule screen where user can see their schedule for the Android Dev Summit.">想法</string>
+    <string name="title_shelf" translation_description="The title for the schedule screen where user can see their schedule for the Android Dev Summit.">书架</string>
+    <string name="title_find" translation_description="The title for the info screen where user can see various information, such as FAQ and travel info.">发现</string>
+    <string name="title_mine" translation_description="The title for the agenda screen where user can see all the sessions they plan to attend.">我的</string>
+
 </resources>

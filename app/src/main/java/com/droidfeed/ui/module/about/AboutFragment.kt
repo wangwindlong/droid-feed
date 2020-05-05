@@ -6,16 +6,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.airbnb.lottie.LottieAnimationView
 import com.droidfeed.BuildConfig
 import com.droidfeed.R
-import com.droidfeed.databinding.ActivityLicenceBinding
 import com.droidfeed.databinding.FragmentAboutBinding
-import com.droidfeed.ui.common.BaseFragment
+import com.droidfeed.ui.common.BaseInjectFragment
 import com.droidfeed.ui.module.about.licence.LicencesActivity
-import com.droidfeed.ui.module.about.licence.LicencesViewModel
 import com.droidfeed.util.AnimUtils.Companion.MEDIUM_ANIM_DURATION
 import com.droidfeed.util.CustomTab
 import com.droidfeed.util.IntentProvider
@@ -26,7 +23,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @SuppressLint("ValidFragment")
-class AboutFragment : BaseFragment<AboutViewModel, FragmentAboutBinding>(AboutViewModel::class.java,"about") {
+class AboutFragment : BaseInjectFragment<AboutViewModel, FragmentAboutBinding>(AboutViewModel::class.java,"about") {
 
     @Inject lateinit var customTab: CustomTab
     @Inject lateinit var intentProvider: IntentProvider

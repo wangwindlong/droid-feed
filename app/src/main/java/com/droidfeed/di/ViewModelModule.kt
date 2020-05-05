@@ -9,9 +9,11 @@ import com.droidfeed.ui.module.about.AboutViewModel
 import com.droidfeed.ui.module.about.licence.LicencesViewModel
 import com.droidfeed.ui.module.conferences.ConferencesViewModel
 import com.droidfeed.ui.module.contribute.ContributeViewModel
+import com.droidfeed.ui.module.empty.EmptyViewModel
 import com.droidfeed.ui.module.feed.FeedViewModel
 import com.droidfeed.ui.module.launch.LaunchViewModel
 import com.droidfeed.ui.module.main.MainViewModel
+import com.droidfeed.ui.module.navigate.NavigateViewModel
 import com.droidfeed.ui.module.onboard.OnBoardViewModel
 import dagger.Binds
 import dagger.Module
@@ -24,6 +26,16 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LaunchViewModel::class)
     abstract fun bindLauncherViewModel(viewModel: LaunchViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EmptyViewModel::class)
+    abstract fun bindEmptyViewModel(viewModel: EmptyViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(NavigateViewModel::class)
+    abstract fun bindNavigateViewModel(viewModel: NavigateViewModel): ViewModel
 
     @Binds
     @IntoMap
