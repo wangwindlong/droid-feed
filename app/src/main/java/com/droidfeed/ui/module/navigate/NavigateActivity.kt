@@ -2,6 +2,7 @@ package com.droidfeed.ui.module.navigate
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -19,7 +20,7 @@ import java.lang.reflect.Field
 import javax.inject.Inject
 
 
-class NavigateActivity: BaseActivity<NavigateViewModel, ActivityNavigateBinding>(NavigateViewModel::class.java)  {
+class NavigateActivity : BaseActivity<NavigateViewModel, ActivityNavigateBinding>(NavigateViewModel::class.java) {
     internal enum class Page(val clazz: Class<*>, val id: Int, val item: Int) {
         HOME(HomeFragment::class.java, R.id.navigation_find, 0),
         DASHBOARD(DashboardFragment::class.java, R.id.navigation_shelf, 1),
@@ -27,20 +28,24 @@ class NavigateActivity: BaseActivity<NavigateViewModel, ActivityNavigateBinding>
         SETTINGS(SettingFragment::class.java, R.id.navigation_info, 3);
 
         companion object {
-            fun from(s: String): Page? = values().find { it.clazz.name == s }
+            fun from(s: String): Page? = values().find { it.toString()== s }
+            fun from(id: Int): Page? = values().find { it.id== id }
+        }
+
+        override fun toString(): String {
+            return clazz.name
         }
     }
+
+    private var currPage: Page? = null
+//    private var currentFragment: Fragment? = null
+    private val mCount = 4
 
     private val mOnNavigationItemSelectedListener: BottomNavigationView.OnNavigationItemSelectedListener = object : BottomNavigationView.OnNavigationItemSelectedListener {
         override fun onNavigationItemSelected(item: MenuItem): Boolean {
             logD("item=${item}")
-            when (item.getItemId()) {
-                R.id.navigation_find -> setPage(Page.HOME)
-                R.id.navigation_shelf -> setPage(Page.DASHBOARD)
-                R.id.navigation_mind -> setPage(Page.NOTIFICATION)
-                R.id.navigation_info -> setPage(Page.SETTINGS)
-                else -> return false
-            }
+            val page = Page.from(item.itemId)
+            if (page != null) setPage(page)
             return true
         }
     }
@@ -54,8 +59,27 @@ class NavigateActivity: BaseActivity<NavigateViewModel, ActivityNavigateBinding>
         super.onCreate(savedInstanceState)
         Timber.d("onCreate sharedPrefs:${sharedPrefs},hasAcceptedTerms ${sharedPrefs.hasAcceptedTerms()}")
         navigation = mBinding.bottomAppBar
-        navigation?.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-        navigation?.selectedItemId = R.id.navigation_find;
+        navigation?.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+
+        if (savedInstanceState != null) {
+            var stack = savedInstanceState.getStringArrayList("fragStack")
+            if (stack != null && stack.size > 0) {
+                logD("stack=${TextUtils.join("", stack)}")
+                FragmentStack.getInstance(mCount).addAll(stack)
+            }
+            currPage = savedInstanceState.getSerializable("currentPage") as? Page
+//            currentFragment = supportFragmentManager.findFragmentByTag(currPage?.toString())
+        }
+        if (currPage == null) currPage = Page.HOME
+        navigation?.selectedItemId = currPage!!.id
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        if (currPage != null) {
+            outState.putSerializable("currentPage", currPage!!)
+            outState.putStringArrayList("fragStack", FragmentStack.getInstance(4).arrayList)
+        }
+        super.onSaveInstanceState(outState)
     }
 
     override fun getLayoutRes(): Int {
@@ -66,7 +90,6 @@ class NavigateActivity: BaseActivity<NavigateViewModel, ActivityNavigateBinding>
         mBinding.text = "测试"
         mBinding.viewModel = mViewModel
     }
-
 
     private fun setPage(page: Page) {
         val fragmentManager: FragmentManager = supportFragmentManager
@@ -93,32 +116,33 @@ class NavigateActivity: BaseActivity<NavigateViewModel, ActivityNavigateBinding>
         } else { // otherwise just show it
             transaction.show(fragment)
         }
-        transaction.addToBackStack(tag)
         transaction.commit()
-    }
-
-    fun getBackStackLastEntry():Int {
-        val index = supportFragmentManager.backStackEntryCount - 1
-        if (index < 0) return R.id.navigation_find
-        val backEntry = supportFragmentManager.getBackStackEntryAt(index)
-        val tag = backEntry.name
-
-//        return Page.from(tag ?: HomeFragment::class.java.name)?.id ?: R.id.navigation_find
-        return Page.from(tag ?: HomeFragment::class.java.name)?.item ?: 0
+        FragmentStack.getInstance(mCount).push(tag)
+        currPage = page
+        logD("setPage currPage=$currPage")
     }
 
     override fun onBackPressed() {
-//        if (!supportFragmentManager.findFragmentByTag(Page.HOME.clazz.name)!!.isDetached) {
-//            super.onBackPressed()
-//        } else {
-//            navigation!!.selectedItemId = R.id.navigation_find
-//        }
-        super.onBackPressed()
-        logD("onBackPressed count=${supportFragmentManager.backStackEntryCount}")
-        if (supportFragmentManager.backStackEntryCount >= 1) {
-            navigation!!.menu.getItem(getBackStackLastEntry()).isChecked = true
-        } else {
-            finish()
+        val currentTag = currPage.toString()
+        logD("currPage=$currPage")
+        val currentFrag = supportFragmentManager.findFragmentByTag(currentTag)
+        val childfragmanager: FragmentManager? = currentFrag?.childFragmentManager
+        if (childfragmanager?.popBackStackImmediate() != true) {
+            val toptag = FragmentStack.getInstance(mCount).pop(currentTag)
+            logD("toptag=$toptag, FragmentStack list=${FragmentStack.getInstance(mCount)}")
+            if (toptag != null) {
+//                val topfrag = supportFragmentManager.findFragmentByTag(toptag)
+//                supportFragmentManager.beginTransaction().hide(currentFragment!!).show(topfrag!!).commit()
+                currPage = Page.from(toptag)
+//                currentFragment = topfrag
+                navigation?.selectedItemId = currPage?.id ?: Page.HOME.id
+            } else {
+                if (currentTag == Page.HOME.toString()) {
+                    super.onBackPressed()
+                } else {
+                    navigation?.selectedItemId = Page.HOME.id
+                }
+            }
         }
     }
 
